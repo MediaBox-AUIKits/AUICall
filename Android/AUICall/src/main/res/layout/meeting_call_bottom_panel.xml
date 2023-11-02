@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:id="@+id/options_panel"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:layout_marginTop="8dp"
+        android:layout_gravity="bottom"
+        android:orientation="horizontal"
+        >
+        <LinearLayout
+            android:id="@+id/mute_voice_btn"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/mute_voice_icon"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@mipmap/mic_open_icon" />
+
+            <TextView
+                android:id="@+id/mute_voice_tips"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="7dp"
+                android:text="静音"
+                android:textColor="#E6E7EC"
+                android:textSize="12sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/mute_camera_btn"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/mute_camera_icon"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@mipmap/camera_open_icon" />
+
+            <TextView
+                android:id="@+id/mute_camera_tips"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="7dp"
+                android:text="关摄像头"
+                android:textColor="#E6E7EC"
+                android:textSize="12sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/member_btn"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/member_icon"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@mipmap/member_icon" />
+
+            <TextView
+                android:id="@+id/member_tips"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="7dp"
+                android:text="成员"
+                android:textColor="#E6E7EC"
+                android:textSize="12sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/beauty_btn"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/beauty_icon"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@mipmap/beauty_icon" />
+
+            <TextView
+                android:id="@+id/beauty_tips"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="7dp"
+                android:text="美颜"
+                android:textColor="#E6E7EC"
+                android:textSize="12sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/more_btn"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/more_icon"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@mipmap/more_icon" />
+
+            <TextView
+                android:id="@+id/more_tips"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="7dp"
+                android:text="更多"
+                android:textColor="#E6E7EC"
+                android:textSize="12sp" />
+        </LinearLayout>
+    </LinearLayout>
+</FrameLayout>

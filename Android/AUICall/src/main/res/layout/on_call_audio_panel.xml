@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/on_call_audio_panel"
+    android:layout_width="match_parent"
+    android:background="@drawable/oncall_panel_bg"
+    android:layout_height="wrap_content">
+    <com.aliyun.auikits.auicall.widget.VoiceMuteWidget
+        android:id="@+id/mute_voice_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginLeft="49dp"/>
+    <com.aliyun.auikits.auicall.widget.PhoneCallWidget
+        android:id="@+id/hangup_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+    <com.aliyun.auikits.auicall.widget.LoudSpeakerWidget
+        android:id="@+id/switch_audio_out_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginRight="49dp"/>
+    <TextView
+        android:id="@+id/time_record"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="14sp"
+        android:textColor="#FCFCFD"
+        android:layout_marginBottom="12dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/hangup_btn"
+        />
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,4 @@
+framework module AUIRoomEngineSDK {
+  header "AUIRoomEngineSDK-Swift.h"
+  requires objc
+}

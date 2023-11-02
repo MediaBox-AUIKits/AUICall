@@ -1,0 +1,255 @@
+// swift-interface-format-version: 1.0
+// swift-compiler-version: Apple Swift version 5.6.1 (swiftlang-5.6.0.323.66 clang-1316.0.20.12)
+// swift-module-flags: -target armv7-apple-ios10.0 -enable-objc-interop -enable-library-evolution -swift-version 5 -enforce-exclusivity=checked -O -module-name AUIRoomEngineSDK
+import AUIMessage
+import AliVCSDK_Premium
+import Swift
+import UIKit
+import _Concurrency
+public enum AUIRoomEngineCameraType : Swift.Int {
+  case invalid
+  case back
+  case front
+  public init?(rawValue: Swift.Int)
+  public typealias RawValue = Swift.Int
+  public var rawValue: Swift.Int {
+    get
+  }
+}
+public enum AUIRoomEngineAudioOutputType : Swift.Int {
+  case invalid
+  case speaker
+  case headset
+  public init?(rawValue: Swift.Int)
+  public typealias RawValue = Swift.Int
+  public var rawValue: Swift.Int {
+    get
+  }
+}
+public typealias AUIRoomEngineCompleted = (_ error: Foundation.NSError?) -> Swift.Void
+@objc @_inheritsConvenienceInitializers public class AUIRoomEngine : ObjectiveC.NSObject {
+  @objc override dynamic public init()
+  @objc deinit
+  public func destroy()
+  public func getRTCEngine() -> Swift.AnyObject?
+  public var roomUser: AUIRoomEngineSDK.AUIRoomUser? {
+    get
+  }
+  public var roomConfig: AUIRoomEngineSDK.AUIRoomEngineConfig? {
+    get
+  }
+  public var isPublishing: Swift.Bool {
+    get
+  }
+  public var renderViewLayout: AUIRoomEngineSDK.AUIRoomRenderViewLayoutProtocol? {
+    get
+    set
+  }
+  public func startPreview(completed: AUIRoomEngineSDK.AUIRoomEngineCompleted? = nil)
+  public func stopPreview(completed: AUIRoomEngineSDK.AUIRoomEngineCompleted? = nil)
+  public func create(completed: @escaping (_ roomId: Swift.String?, _ error: Foundation.NSError?) -> Swift.Void)
+  public func join(config: AUIRoomEngineSDK.AUIRoomEngineConfig, completed: AUIRoomEngineSDK.AUIRoomEngineCompleted? = nil)
+  public func leave(completed: AUIRoomEngineSDK.AUIRoomEngineCompleted? = nil)
+  public var isJoin: Swift.Bool {
+    get
+  }
+  public func requestJoin(roomId: Swift.String, userId: Swift.String, extra: [Swift.AnyHashable : Any]? = nil, completed: AUIRoomEngineSDK.AUIRoomEngineCompleted? = nil)
+  public func cancelRequestJoin(roomId: Swift.String, userId: Swift.String, extra: [Swift.AnyHashable : Any]? = nil, completed: AUIRoomEngineSDK.AUIRoomEngineCompleted? = nil)
+  public func responseJoin(roomId: Swift.String, userId: Swift.String, agree: Swift.Bool, extra: [Swift.AnyHashable : Any]? = nil, completed: AUIRoomEngineSDK.AUIRoomEngineCompleted? = nil)
+  public func startPublish(completed: AUIRoomEngineSDK.AUIRoomEngineCompleted? = nil)
+  public func stopPublish(completed: AUIRoomEngineSDK.AUIRoomEngineCompleted? = nil)
+  public func requestPublish(userId: Swift.String, extra: [Swift.AnyHashable : Any]? = nil, completed: AUIRoomEngineSDK.AUIRoomEngineCompleted? = nil)
+  public func cancelRequestPublish(userId: Swift.String, extra: [Swift.AnyHashable : Any]? = nil, completed: AUIRoomEngineSDK.AUIRoomEngineCompleted? = nil)
+  public func responsePublish(userId: Swift.String, agree: Swift.Bool, extra: [Swift.AnyHashable : Any]? = nil, completed: AUIRoomEngineSDK.AUIRoomEngineCompleted? = nil)
+  public func switchCamera(off: Swift.Bool, userId: Swift.String, completed: AUIRoomEngineSDK.AUIRoomEngineCompleted? = nil)
+  public func switchMicrophone(off: Swift.Bool, userId: Swift.String, completed: AUIRoomEngineSDK.AUIRoomEngineCompleted? = nil)
+  public func switchPreviewMirror(on: Swift.Bool)
+  public func getIsPreviewMirror() -> Swift.Bool
+  public func setCameraType(type: AUIRoomEngineSDK.AUIRoomEngineCameraType)
+  public func getCameraType() -> AUIRoomEngineSDK.AUIRoomEngineCameraType
+  public func switchAudioOutput(type: AUIRoomEngineSDK.AUIRoomEngineAudioOutputType)
+  public func getAudioOutputType() -> AUIRoomEngineSDK.AUIRoomEngineAudioOutputType
+  public func sendCustomMessage(message: [Swift.AnyHashable : Any], roomId: Swift.String?, userId: Swift.String? = nil, skipAudit: Swift.Bool = true, completed: AUIRoomEngineSDK.AUIRoomEngineCompleted? = nil)
+}
+extension AUIRoomEngineSDK.AUIRoomEngine {
+  public static func registerSDK(scene: Swift.String)
+  public static var currrentUser: AUIRoomEngineSDK.AUIRoomUser? {
+    get
+    set
+  }
+  public static var isLogin: Swift.Bool {
+    get
+  }
+  public static func login(token: Swift.String, completed: AUIRoomEngineSDK.AUIRoomEngineCompleted?)
+  public static func logout(completed: AUIRoomEngineSDK.AUIRoomEngineCompleted?)
+  public static func getMessageService() -> AUIMessage.AUIMessageServiceProtocol
+}
+extension AUIRoomEngineSDK.AUIRoomEngine : AliVCSDK_Premium.AliRtcEngineDelegate {
+  @objc dynamic public func onJoinChannelResult(_ result: Swift.Int32, channel: Swift.String, userId: Swift.String, elapsed: Swift.Int32)
+  @objc dynamic public func onLeaveChannelResult(_ result: Swift.Int32, stats: AliVCSDK_Premium.AliRtcStats)
+  @objc dynamic public func onRemoteUser(onLineNotify uid: Swift.String, elapsed: Swift.Int32)
+  @objc dynamic public func onRemoteUserOffLineNotify(_ uid: Swift.String, offlineReason reason: AliVCSDK_Premium.AliRtcUserOfflineReason)
+  @objc dynamic public func onRemoteTrackAvailableNotify(_ uid: Swift.String, audioTrack: AliVCSDK_Premium.AliRtcAudioTrack, videoTrack: AliVCSDK_Premium.AliRtcVideoTrack)
+  @objc dynamic public func onUserVideoMuted(_ uid: Swift.String, videoMuted isMute: Swift.Bool)
+  @objc dynamic public func onUserAudioMuted(_ uid: Swift.String, audioMuted isMute: Swift.Bool)
+  @objc dynamic public func onNetworkQualityChanged(_ uid: Swift.String, up upQuality: AliVCSDK_Premium.AliRtcNetworkQuality, downNetworkQuality downQuality: AliVCSDK_Premium.AliRtcNetworkQuality)
+  @objc dynamic public func onConnectionStatusChange(_ status: AliVCSDK_Premium.AliRtcConnectionStatus, reason: AliVCSDK_Premium.AliRtcConnectionStatusChangeReason)
+  @objc dynamic public func onOccurError(_ error: Swift.Int32, message: Swift.String)
+  @objc dynamic public func onOccurWarning(_ warn: Swift.Int32, message: Swift.String)
+  @objc dynamic public func onAuthInfoWillExpire()
+}
+extension AUIRoomEngineSDK.AUIRoomEngine : AUIMessage.AUIMessageListenerProtocol {
+  @objc dynamic public func onJoinGroup(_ model: AUIMessage.AUIMessageModel)
+  @objc dynamic public func onLeaveGroup(_ model: AUIMessage.AUIMessageModel)
+  @objc dynamic public func onMessageReceived(_ model: AUIMessage.AUIMessageModel)
+}
+@objc open class AUIRoomUser : ObjectiveC.NSObject, AUIMessage.AUIUserProtocol {
+  public init(_ userId: Swift.String)
+  public init(user: AUIMessage.AUIUserProtocol)
+  @objc open var userId: Swift.String {
+    get
+  }
+  @objc open var userNick: Swift.String
+  @objc open var userAvatar: Swift.String
+  open func copy() -> AUIRoomEngineSDK.AUIRoomUser
+  open func update(user: AUIRoomEngineSDK.AUIRoomUser?, force: Swift.Bool = false)
+  @objc deinit
+}
+public enum AUIRoomEngineErrorCode : Swift.Int {
+  case Common
+  case ConnectionHeartbeatTimeout
+  public init?(rawValue: Swift.Int)
+  public typealias RawValue = Swift.Int
+  public var rawValue: Swift.Int {
+    get
+  }
+}
+@objc @_inheritsConvenienceInitializers public class AUIRoomEngineConfig : ObjectiveC.NSObject {
+  public var appId: Swift.String
+  public var gslb: Swift.String
+  public var roomId: Swift.String
+  public var timestamp: Swift.Int64
+  public var token: Swift.String
+  public var dimensions: CoreGraphics.CGSize
+  public var frameRate: Swift.Int
+  @objc override dynamic public init()
+  @objc deinit
+}
+@objc public protocol AUIRoomEngineDelegate {
+  @objc optional func onJoined(user: AUIRoomEngineSDK.AUIRoomUser)
+  @objc optional func onLeaved(user: AUIRoomEngineSDK.AUIRoomUser)
+  @objc optional func onReceivedRequestJoin(user: AUIRoomEngineSDK.AUIRoomUser, roomId: Swift.String, extra: [Swift.AnyHashable : Any]?)
+  @objc optional func onReceivedCancelRequestJoin(user: AUIRoomEngineSDK.AUIRoomUser, roomId: Swift.String, extra: [Swift.AnyHashable : Any]?)
+  @objc optional func onReceivedResponseJoin(user: AUIRoomEngineSDK.AUIRoomUser, roomId: Swift.String, agree: Swift.Bool, extra: [Swift.AnyHashable : Any]?)
+  @objc optional func onStartedPublish(user: AUIRoomEngineSDK.AUIRoomUser)
+  @objc optional func onStopedPublish(user: AUIRoomEngineSDK.AUIRoomUser)
+  @objc optional func onReceivedRequestPublish(user: AUIRoomEngineSDK.AUIRoomUser, extra: [Swift.AnyHashable : Any]?, completed: @escaping (_ agree: Swift.Bool, _ extra: [Swift.AnyHashable : Any]?) -> Swift.Void)
+  @objc optional func onReceivedCancelRequestPublish(user: AUIRoomEngineSDK.AUIRoomUser, extra: [Swift.AnyHashable : Any]?)
+  @objc optional func onReceivedResponsePublish(user: AUIRoomEngineSDK.AUIRoomUser, agree: Swift.Bool, extra: [Swift.AnyHashable : Any]?)
+  @objc optional func onReceivedMicrophoneStateChanged(user: AUIRoomEngineSDK.AUIRoomUser, off: Swift.Bool)
+  @objc optional func onReceivedCameraStateChanged(user: AUIRoomEngineSDK.AUIRoomUser, off: Swift.Bool)
+  @objc optional func onMicrophoneStateChanged(user: AUIRoomEngineSDK.AUIRoomUser, off: Swift.Bool)
+  @objc optional func onCameraStateChanged(user: AUIRoomEngineSDK.AUIRoomUser, off: Swift.Bool)
+  @objc optional func onReceivedCustomMessage(user: AUIRoomEngineSDK.AUIRoomUser, message: [Swift.AnyHashable : Any])
+  @objc optional func onError(_ error: Swift.Error)
+  @objc optional func onJoinTokenWillExpire(fetchNewToken: ((_ newToken: Swift.String, _ timestamp: Swift.Int64) -> Swift.Void)?)
+}
+extension AUIRoomEngineSDK.AUIRoomEngine {
+  public func addObserver(delegate: AUIRoomEngineSDK.AUIRoomEngineDelegate)
+  public func removeObserver(delegate: AUIRoomEngineSDK.AUIRoomEngineDelegate)
+}
+@objc @_Concurrency.MainActor(unsafe) open class AUIRoomRenderView : UIKit.UIView {
+  public enum Style {
+    case normal
+    case large
+    case small
+    public static func == (a: AUIRoomEngineSDK.AUIRoomRenderView.Style, b: AUIRoomEngineSDK.AUIRoomRenderView.Style) -> Swift.Bool
+    public func hash(into hasher: inout Swift.Hasher)
+    public var hashValue: Swift.Int {
+      get
+    }
+  }
+  @_Concurrency.MainActor(unsafe) open var style: AUIRoomEngineSDK.AUIRoomRenderView.Style
+  @_Concurrency.MainActor(unsafe) final public let user: AUIRoomEngineSDK.AUIRoomUser
+  @_Concurrency.MainActor(unsafe) final public let displayView: UIKit.UIView
+  public enum RenderMode : Swift.UInt {
+    case auto
+    case stretch
+    case fill
+    case crop
+    public init?(rawValue: Swift.UInt)
+    public typealias RawValue = Swift.UInt
+    public var rawValue: Swift.UInt {
+      get
+    }
+  }
+  @_Concurrency.MainActor(unsafe) public var renderMode: AUIRoomEngineSDK.AUIRoomRenderView.RenderMode {
+    get
+    set
+  }
+  @_Concurrency.MainActor(unsafe) public init(user: AUIRoomEngineSDK.AUIRoomUser)
+  @_Concurrency.MainActor(unsafe) @objc required dynamic public init?(coder: Foundation.NSCoder)
+  @_Concurrency.MainActor(unsafe) @objc override dynamic open func layoutSubviews()
+  @objc deinit
+}
+@objc public protocol AUIRoomRenderViewLayoutProtocol {
+  @objc func layoutRenderViewList()
+  @objc func getRenderViewList() -> [AUIRoomEngineSDK.AUIRoomRenderView]
+  @objc func createRenderView(user: AUIRoomEngineSDK.AUIRoomUser) -> AUIRoomEngineSDK.AUIRoomRenderView?
+  @objc func insertRenderView(renderView: AUIRoomEngineSDK.AUIRoomRenderView)
+  @objc func removeRenderView(renderView: AUIRoomEngineSDK.AUIRoomRenderView)
+}
+@objc @_Concurrency.MainActor(unsafe) open class AUIRoomRenderViewDefaultLayout : UIKit.UIView, AUIRoomEngineSDK.AUIRoomRenderViewLayoutProtocol {
+  @_Concurrency.MainActor(unsafe) public init(dimensions: CoreGraphics.CGSize)
+  @_Concurrency.MainActor(unsafe) @objc required dynamic public init?(coder: Foundation.NSCoder)
+  @_Concurrency.MainActor(unsafe) @objc override dynamic open func layoutSubviews()
+  @_Concurrency.MainActor(unsafe) public var dimensions: CoreGraphics.CGSize {
+    get
+  }
+  @_Concurrency.MainActor(unsafe) public var createRenderViewCallback: ((_ user: AUIRoomEngineSDK.AUIRoomUser, _ dimensions: CoreGraphics.CGSize?) -> AUIRoomEngineSDK.AUIRoomRenderView?)?
+  @_Concurrency.MainActor(unsafe) @objc public func getRenderViewList() -> [AUIRoomEngineSDK.AUIRoomRenderView]
+  @_Concurrency.MainActor(unsafe) @objc open func createRenderView(user: AUIRoomEngineSDK.AUIRoomUser) -> AUIRoomEngineSDK.AUIRoomRenderView?
+  @_Concurrency.MainActor(unsafe) open func willInsertRenderView(renderView: AUIRoomEngineSDK.AUIRoomRenderView) -> Swift.Int
+  @_Concurrency.MainActor(unsafe) @objc open func insertRenderView(renderView: AUIRoomEngineSDK.AUIRoomRenderView)
+  @_Concurrency.MainActor(unsafe) @objc open func removeRenderView(renderView: AUIRoomEngineSDK.AUIRoomRenderView)
+  @_Concurrency.MainActor(unsafe) open var smallStyleRenderViewDefaultFrame: CoreGraphics.CGRect {
+    get
+  }
+  @_Concurrency.MainActor(unsafe) open var smallStyleRenderViewSafeEdge: UIKit.UIEdgeInsets {
+    get
+  }
+  @_Concurrency.MainActor(unsafe) open var scrollView: UIKit.UIScrollView {
+    get
+    set
+  }
+  @_Concurrency.MainActor(unsafe) public var pageIndicators: [UIKit.UIView] {
+    get
+  }
+  @_Concurrency.MainActor(unsafe) public var curPageIndicatorIndex: Swift.Int {
+    get
+  }
+  @_Concurrency.MainActor(unsafe) open func createPageIndicator(size: CoreGraphics.CGSize) -> UIKit.UIView
+  @_Concurrency.MainActor(unsafe) open func pageIndicatorWillActive(indicator: UIKit.UIView, isActive: Swift.Bool)
+  @_Concurrency.MainActor(unsafe) open func willLayoutRenderViewList()
+  @_Concurrency.MainActor(unsafe) @objc open func layoutRenderViewList()
+  @objc deinit
+}
+extension AUIRoomEngineSDK.AUIRoomRenderViewDefaultLayout : UIKit.UIScrollViewDelegate {
+  @_Concurrency.MainActor(unsafe) @objc dynamic public func scrollViewDidEndDragging(_ scrollView: UIKit.UIScrollView, willDecelerate decelerate: Swift.Bool)
+  @_Concurrency.MainActor(unsafe) @objc dynamic public func scrollViewDidEndDecelerating(_ scrollView: UIKit.UIScrollView)
+  @_Concurrency.MainActor(unsafe) @objc dynamic public func scrollViewDidScroll(_ scrollView: UIKit.UIScrollView)
+}
+extension AUIRoomEngineSDK.AUIRoomEngineCameraType : Swift.Equatable {}
+extension AUIRoomEngineSDK.AUIRoomEngineCameraType : Swift.Hashable {}
+extension AUIRoomEngineSDK.AUIRoomEngineCameraType : Swift.RawRepresentable {}
+extension AUIRoomEngineSDK.AUIRoomEngineAudioOutputType : Swift.Equatable {}
+extension AUIRoomEngineSDK.AUIRoomEngineAudioOutputType : Swift.Hashable {}
+extension AUIRoomEngineSDK.AUIRoomEngineAudioOutputType : Swift.RawRepresentable {}
+extension AUIRoomEngineSDK.AUIRoomEngineErrorCode : Swift.Equatable {}
+extension AUIRoomEngineSDK.AUIRoomEngineErrorCode : Swift.Hashable {}
+extension AUIRoomEngineSDK.AUIRoomEngineErrorCode : Swift.RawRepresentable {}
+extension AUIRoomEngineSDK.AUIRoomRenderView.Style : Swift.Equatable {}
+extension AUIRoomEngineSDK.AUIRoomRenderView.Style : Swift.Hashable {}
+extension AUIRoomEngineSDK.AUIRoomRenderView.RenderMode : Swift.Equatable {}
+extension AUIRoomEngineSDK.AUIRoomRenderView.RenderMode : Swift.Hashable {}
+extension AUIRoomEngineSDK.AUIRoomRenderView.RenderMode : Swift.RawRepresentable {}

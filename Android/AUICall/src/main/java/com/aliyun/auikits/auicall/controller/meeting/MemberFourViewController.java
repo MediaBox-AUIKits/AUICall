@@ -1,0 +1,43 @@
+package com.aliyun.auikits.auicall.controller.meeting;
+
+import android.content.Context;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+
+import com.aliyun.auikits.auicall.bean.UserInfo;
+import com.aliyun.auikits.auicall.model.AUICallNVNModel;
+import com.aliyun.auikits.auicall.widget.MeetingMemberView;
+import com.aliyun.auikits.auicall.R;
+
+public final class MemberFourViewController extends MemberMoreViewController {
+    public MemberFourViewController(ViewGroup containerView, AUICallNVNModel model) {
+        super(containerView, model);
+    }
+
+    @Override 
+    public View inflateView( Context ctx) {
+        View view = LayoutInflater.from(ctx).inflate(R.layout.meeting_call_four_view, getMRootContainerView(), false);
+        mHostView = view.findViewById(R.id.host_view);
+        MeetingMemberView view1 = (MeetingMemberView) view.findViewById(R.id.member1_view);
+        MeetingMemberView view2 = (MeetingMemberView) view.findViewById(R.id.member2_view);
+        MeetingMemberView view3 = (MeetingMemberView) view.findViewById(R.id.member3_view);
+        mHostView.setBizModel(mMeetingModel);
+        view1.setBizModel(mMeetingModel);
+        view2.setBizModel(mMeetingModel);
+        view3.setBizModel(mMeetingModel);
+        adaptItemUI(mHostView);
+        adaptItemUI(view1);
+        adaptItemUI(view2);
+        adaptItemUI(view3);
+        mMemberViews.add(mHostView);
+        mMemberViews.add(view1);
+        mMemberViews.add(view2);
+        mMemberViews.add(view3);
+        return view;
+    }
+
+    @Override 
+    public void updateCurrentMic( UserInfo user) {
+    }
+}

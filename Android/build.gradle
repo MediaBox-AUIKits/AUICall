@@ -1,0 +1,48 @@
+buildscript {
+    repositories {
+        maven {
+            allowInsecureProtocol = true
+            url "http://mvnrepo.alibaba-inc.com/mvn/repository"
+        }
+        maven {
+            allowInsecureProtocol = true
+            url 'http://mvnrepo.alibaba-inc.com/nexus/content/repositories/snapshots'
+        }
+        maven { url 'https://maven.aliyun.com/repository/google' }  // google
+        maven { url 'https://maven.aliyun.com/repository/public' }  // jcenter
+        gradlePluginPortal()
+        google()
+        mavenCentral()
+        mavenLocal()
+    }
+    apply from: './config.gradle'
+    dependencies {
+        classpath externalAndroidBuildGradlePlugin
+        classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:1.6.10'
+        // NOTE: Do not place your application dependencies here; they belong
+        // in the individual module build.gradle files
+        classpath 'com.github.kezong:fat-aar:1.3.8'
+    }
+}
+
+allprojects {
+    repositories {
+        maven {
+            allowInsecureProtocol = true
+            url "http://mvnrepo.alibaba-inc.com/mvn/repository"
+        }
+        maven {
+            allowInsecureProtocol = true
+            url 'http://mvnrepo.alibaba-inc.com/nexus/content/repositories/snapshots'
+        }
+        maven { url 'https://maven.aliyun.com/repository/google' }  // google
+        maven { url 'https://maven.aliyun.com/repository/public' }  // jcenter
+        google()
+        mavenCentral()
+        mavenLocal()
+    }
+}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}

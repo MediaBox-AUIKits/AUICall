@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:gravity="center_horizontal">
+    <ImageView
+        android:id="@+id/mute_voice_icon"
+        android:layout_width="52dp"
+        android:layout_height="52dp"
+        android:src="@drawable/ic_voice_mute"
+        />
+    <TextView
+        android:id="@+id/mute_voice_tips"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#E6E7EC"
+        android:textSize="12sp"
+        android:layout_marginTop="8dp"
+        android:text="静音"
+        />
+</LinearLayout>

@@ -1,0 +1,30 @@
+use_frameworks!
+#source 'https://github.com/CocoaPods/Specs.git'
+
+platform :ios, '10.0'
+
+AlivcSDK='AliVCSDK_Premium'
+def common
+  
+  pod "#{AlivcSDK}", '~> 6.4.0'
+
+  pod 'AUIFoundation/All', :path => '../AUIBaseKits/AUIFoundation/'
+  pod 'AUIMessage/Alivc', :path => '../AUIBaseKits/AUIMessage/'
+  
+end
+
+target 'AUICall1V1Example' do
+  
+  common
+  pod "AUICall/RoomEngine_Lib/#{AlivcSDK}", :path => '../'
+  pod 'AUICall/1V1', :path => '../'
+  
+end
+
+target 'AUICallNVNExample' do
+  
+  common
+  pod "AUICall/RoomEngine_Lib/#{AlivcSDK}", :path => '../'
+  pod 'AUICall/NVN', :path => '../'
+  
+end

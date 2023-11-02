@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">AUICall</string>
+    <string name="host_mute_tips">主持人已开启了全员静音，无法开启麦克风</string>
+    <string name="host_unmute_tips">主持人已解除全员静音，可自行开启麦克风</string>
+    <string name="being_kickout_tips">您已被主持人移除</string>
+    <string name="host_mute_mic_tips">您已被主持人静音</string>
+    <string name="host_mute_camera_tips">您已被主持人关闭摄像头</string>
+    <string name="host_mute_mic_own_tips">已开启全员静音</string>
+    <string name="host_unmute_mic_own_tips">已解除全员静音</string>
+    <string name="me">我</string>
+    <string name="request_token_failure_tips">token获取失败，请重试</string>
+    <string name="app_login_failure_tips">登录失败，请重试</string>
+</resources>

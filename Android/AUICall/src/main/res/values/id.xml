@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="debug_info_list" type="id"/>
+    <item name="debug_operate_layout" type="id"/>
+    <item name="current_user_id" type="id"/>
+    <item name="target_user_id" type="id"/>
+</resources>

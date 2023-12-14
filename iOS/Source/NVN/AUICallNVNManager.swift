@@ -16,7 +16,6 @@ public class AUICallNVNManager {
     
     init() {
         AUIRoomEngine.registerSDK(scene: "aui-call")
-        AUIMessageServiceImpl_Alivc.globalGroupId = AUICallGlobalConfig.globaleGroupID;
     }
     
     public var me: AUIRoomUser? {
@@ -47,17 +46,17 @@ public class AUICallNVNManager {
     
     private func login(loginUser: AUIRoomUser, completed: @escaping (_ success: Bool)->Void) {
         AUIRoomEngine.currrentUser = loginUser
-        AUICallAppServer.fetchRoomEngineLoginToken(uid: loginUser.userId) { token, error in
+        AUICallAppServer.fetchRoomEngineLoginToken(uid: loginUser.userId) { tokenData, error in
             guard error == nil else {
                 completed(false)
                 return
             }
-            guard let token = token else {
+            guard let tokenData = tokenData else {
                 completed(false)
                 return
             }
             
-            AUIRoomEngine.login(token: token) { error in
+            AUIRoomEngine.login(tokenData: tokenData) { error in
                 if error == nil {
                     self.setupRoomEngine()
                 }
@@ -88,37 +87,38 @@ public class AUICallNVNManager {
         return AUICallNVNController.isCalling
     }
     
-    public func createCall(roomName: String?, viewController: UIViewController? = nil, completed: (()->Void)? = nil) {
-        let topVC = viewController ?? UIViewController.av_top()
+    // 通过id、name与config创建一个通话房间，并进入
+    public func createCall(roomId: String, roomName: String?, userConfig: AUICallRoomUserConfig, currVC: UIViewController? = nil, completed: (()->Void)? = nil) {
+        let topVC = currVC ?? UIViewController.av_top()
         let hud = AVProgressHUD.showAdded(to: topVC.view, animated: true)
         hud.backgroundColor = AVTheme.tsp_fill_medium
         hud.iconType = .loading
         hud.labelText = "创建房间号中"
-        AUICallNVNController.createCall(roomName: roomName) { room, error in
+        AUICallNVNController.createCall(roomId: roomId, roomName: roomName) { room, error in
             hud.hide(animated: false)
             if let error = error {
                 AVToastView.show("房间号创建失败:\(error)", view: topVC.view, position: .mid)
                 return
             }
-            
+
             guard let room = room else {
                 return
             }
             
-            let create = AUICallNVNCreateViewController()
-            create.room = room
-            topVC.navigationController?.pushViewController(create, animated: true)
-            completed?()
+            self.joinCall(room: room, userConfig: userConfig, currVC: currVC) {
+                completed?()
+            }
         }
     }
     
-    public func startCall(userConfig: AUICallRoomUserConfig, roomName: String?, currVC: UIViewController? = nil, completed: (()->Void)? = nil) {
+    // 通过roomName与config开始通话
+    public func startCall(roomName: String?, userConfig: AUICallRoomUserConfig, currVC: UIViewController? = nil, completed: (()->Void)? = nil) {
         let topVC = currVC ?? UIViewController.av_top()
         let hud = AVProgressHUD.showAdded(to: topVC.view, animated: true)
         hud.backgroundColor = AVTheme.tsp_fill_medium
         hud.iconType = .loading
         hud.labelText = "创建中..."
-        AUICallNVNController.startCall(userConfig: userConfig, roomName: roomName) { controller, error in
+        AUICallNVNController.startCall(roomName: roomName, userConfig: userConfig) { controller, error in
             hud.hide(animated: false)
             if let error = error {
                 AVToastView.show("创建房间失败:\(error)", view: topVC.view, position: .mid)
@@ -134,6 +134,7 @@ public class AUICallNVNManager {
         }
     }
     
+    // 进入通话
     public func joinCall(room: AUICallRoom, userConfig: AUICallRoomUserConfig, currVC: UIViewController? = nil, completed: (()->Void)? = nil) {
         let topVC = currVC ?? UIViewController.av_top()
         let hud = AVProgressHUD.showAdded(to: topVC.view, animated: true)

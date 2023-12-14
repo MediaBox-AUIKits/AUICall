@@ -13,8 +13,6 @@ public class AUICallGlobalConfig: NSObject {
     public static let appID = "你的appID"
     public static let gslb = "https://gw.rtn.aliyuncs.com"
     
-    public static let globaleGroupID = "你的globaleGroupID"
-
     public static let dimensions = CGSize(width: 360, height: 640)
     public static let frameRate = 15
 }

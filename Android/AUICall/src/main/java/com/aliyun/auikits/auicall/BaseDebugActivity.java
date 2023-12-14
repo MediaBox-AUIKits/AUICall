@@ -10,9 +10,10 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.aliyun.auikits.auicall.adapter.DebugInfoListAdapter;
 import com.aliyun.auikits.auicall.util.PermissionUtils;
+import com.aliyun.auikits.room.util.AliyunLog;
 
 public abstract class BaseDebugActivity extends AppCompatActivity {
-
+    private static final String TAG = "debug";
     private DebugInfoListAdapter mDebugInfoAdapter;
 
     private ListView mDebugInfoListView;
@@ -52,7 +53,7 @@ public abstract class BaseDebugActivity extends AppCompatActivity {
     @Override
     public void onRequestPermissionsResult(int requestCode,  String[] permissions,  int[] grantResults) {
         if (requestCode == 1000) {
-            if (!PermissionUtils.checkPermissionsGroup(getApplicationContext(), PermissionUtils.PERMISSION_MANIFEST)) {
+            if (!PermissionUtils.checkPermissionsGroup(getApplicationContext(), PermissionUtils.getPermissions())) {
                 throw new RuntimeException("permission denied!!! please try again!!!");
             }
             return;
@@ -61,7 +62,7 @@ public abstract class BaseDebugActivity extends AppCompatActivity {
     }
 
     public final void addDebugInfo( final String info) {
-
+        AliyunLog.d(TAG, info);
         runOnUiThread(new Runnable() {
             @Override
             public final void run() {

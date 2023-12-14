@@ -29,17 +29,22 @@ public class PermissionUtils {
         Manifest.permission.READ_EXTERNAL_STORAGE
     };
 
-    public static final String[] PERMISSION_STORAGE = {
-        Manifest.permission.READ_EXTERNAL_STORAGE,
-        Manifest.permission.WRITE_EXTERNAL_STORAGE,
+    public static final String[] PERMISSION_MANIFEST33 = {
+            Manifest.permission.CAMERA,
+            Manifest.permission.RECORD_AUDIO,
+            Manifest.permission.READ_PHONE_STATE,
+            Manifest.permission.READ_MEDIA_IMAGES,
+            Manifest.permission.READ_MEDIA_VIDEO,
+            Manifest.permission.READ_MEDIA_AUDIO,
     };
 
-    public static final String[] PERMISSION_CAMERA = {
-        Manifest.permission.CAMERA,
-        Manifest.permission.RECORD_AUDIO,
-        Manifest.permission.READ_EXTERNAL_STORAGE,
-        Manifest.permission.WRITE_EXTERNAL_STORAGE
-    };
+    public static String[] getPermissions() {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
+            return PERMISSION_MANIFEST;
+        }
+        return PERMISSION_MANIFEST33;
+    }
+
 
     public static boolean checkPermissionsGroup(Context context, String[] permissions) {
 

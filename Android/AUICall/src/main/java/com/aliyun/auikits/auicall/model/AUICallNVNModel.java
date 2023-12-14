@@ -18,7 +18,7 @@ public interface AUICallNVNModel {
 
     void cancelInvite( String str, boolean z);
 
-    void create( CreateRoomCallback meetingCreateRoomCallback);
+    void create(String roomId, CreateRoomCallback meetingCreateRoomCallback);
 
     void disableBeauty();
 

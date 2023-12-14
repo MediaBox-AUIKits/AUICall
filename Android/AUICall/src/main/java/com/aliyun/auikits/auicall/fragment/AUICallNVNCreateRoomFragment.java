@@ -6,18 +6,24 @@ import android.content.Context;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.aliyun.auikits.auicall.AUICallNVNActivity;
 import com.aliyun.auikits.auicall.R;
+import com.aliyun.auikits.auicall.model.AUICallNVNModel;
+import com.aliyun.auikits.auicall.model.callback.CreateRoomCallback;
+import com.aliyun.auikits.auicall.util.AUICallConfig;
+import com.aliyun.auikits.room.util.AliyunLog;
+
 public final class AUICallNVNCreateRoomFragment extends BaseFragment {
 
     private Callback callback;
     private boolean mCameraOn;
 
     private Switch mCameraSwitch;
-
-    private View mCopyBtn;
 
     private View mJoinBtn;
 
@@ -28,14 +34,16 @@ public final class AUICallNVNCreateRoomFragment extends BaseFragment {
 
     private TextView mMyId;
 
-    private String mRoomId;
+    private EditText mRoomIdInput;
 
-    private TextView mRoomIdInput;
+    private View mClear;
 
     public interface Callback {
         void onActionJoinRoom( String str, boolean z, boolean z2);
 
         void onActionJoinRoomLoudspeaker(boolean z);
+
+        void onCreateRoomFailed(int code, String msg);
     }
 
     public final Callback getCallback() {
@@ -58,23 +66,13 @@ public final class AUICallNVNCreateRoomFragment extends BaseFragment {
 
     @Override 
     public void onInitContentView( View rootView) {
-        this.mRoomIdInput = (TextView) rootView.findViewById(R.id.room_id_input);
-        this.mCameraSwitch = (Switch) rootView.findViewById(R.id.camera_switch);
-        this.mMicSwitch = (Switch) rootView.findViewById(R.id.mic_switch);
-        this.mLoudspeakerSwitch = (Switch) rootView.findViewById(R.id.loudspeaker_switch);
-        this.mMyId = (TextView) rootView.findViewById(R.id.my_id);
+        this.mRoomIdInput = rootView.findViewById(R.id.room_id_input);
+        this.mCameraSwitch = rootView.findViewById(R.id.camera_switch);
+        this.mMicSwitch = rootView.findViewById(R.id.mic_switch);
+        this.mLoudspeakerSwitch = rootView.findViewById(R.id.loudspeaker_switch);
+        this.mMyId = rootView.findViewById(R.id.my_id);
         this.mJoinBtn = rootView.findViewById(R.id.join_room_btn);
-        this.mCopyBtn = rootView.findViewById(R.id.copy);
-        mRoomIdInput.setText(mRoomId != null ? mRoomId : "");
-        mCopyBtn.setOnClickListener(new View.OnClickListener() { 
-            @Override 
-            public final void onClick(View view2) {
-                ClipboardManager clipBoard = (ClipboardManager) requireContext().getSystemService(Context.CLIPBOARD_SERVICE);
-                ClipData clipData = ClipData.newPlainText("id", mRoomIdInput.getText().toString());
-                clipBoard.setPrimaryClip(clipData);
-                Toast.makeText(requireContext(), "已复制", Toast.LENGTH_SHORT).show();
-            }
-        });
+        this.mClear = rootView.findViewById(R.id.room_input_clear);
         mMyId.setText("我的ID:" + getUserIdFromSPF());
         mCameraSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() { 
             @Override 
@@ -99,23 +97,48 @@ public final class AUICallNVNCreateRoomFragment extends BaseFragment {
         });
         mJoinBtn.setOnClickListener(new View.OnClickListener() { 
             @Override 
-            public final void onClick(View view3) {
-            String roomId = mRoomIdInput.getText().toString();
-            if (!TextUtils.isEmpty(roomId) && callback != null) {
-                callback.onActionJoinRoom(roomId, mCameraOn, mMicOn);
+            public void onClick(View view3) {
+                if(bizModel == null){
+                    return;
+                }
+                String roomId = mRoomIdInput.getText().toString();
+                if(TextUtils.isEmpty(roomId) || TextUtils.isEmpty(roomId.trim())){
+                    return;
+                }
+                mClear.setEnabled(false);
+                final String finalRoomId = roomId.trim();
+                bizModel.create(finalRoomId, new CreateRoomCallback() {
+                    @Override
+                    public void onError(int i, String str) {
+                        mClear.setEnabled(true);
+                        if(callback != null){
+                            callback.onCreateRoomFailed(i, str);
+                        }
+                    }
+
+                    @Override
+                    public void onSuccess(String str) {
+                        mClear.setEnabled(true);
+                        if (callback != null) {
+                            callback.onActionJoinRoom(finalRoomId, mCameraOn, mMicOn);
+                        }
+                    }
+                });
+
             }
+        });
+        this.mClear.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mRoomIdInput == null) {
+                    return;
+                }
+                mRoomIdInput.setText("");
             }
         });
     }
 
-    public final void updateRoomId( String roomId) {
-        this.mRoomId = roomId;
-        if(mRoomIdInput != null){
-            mRoomIdInput.setText(roomId);
-        }
-    }
-
-    public final void resetState() {
+    public void resetState() {
         if (mCameraSwitch != null) {
             mCameraSwitch.setChecked(false);
         }
@@ -125,6 +148,5 @@ public final class AUICallNVNCreateRoomFragment extends BaseFragment {
         if (mRoomIdInput != null) {
             mRoomIdInput.setText("");
         }
-        this.mRoomId = null;
     }
 }

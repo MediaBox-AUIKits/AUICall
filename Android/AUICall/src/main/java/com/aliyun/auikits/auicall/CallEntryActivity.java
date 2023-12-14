@@ -41,7 +41,7 @@ public class CallEntryActivity extends AppCompatActivity {
     }
 
     private final boolean checkPermission(boolean req) {
-        if (!PermissionUtils.checkPermissionsGroup(getApplicationContext(), PermissionUtils.PERMISSION_MANIFEST)) {
+        if (!PermissionUtils.checkPermissionsGroup(getApplicationContext(), PermissionUtils.getPermissions())) {
             if (!req) {
                 Toast.makeText(this, "请开通权限后重试", Toast.LENGTH_SHORT).show();
             } else {
@@ -55,7 +55,7 @@ public class CallEntryActivity extends AppCompatActivity {
     @Override 
     public void onRequestPermissionsResult(int requestCode,  String[] permissions,  int[] grantResults) {
         if (requestCode == 1000) {
-            if (!PermissionUtils.checkPermissionsGroup(getApplicationContext(), PermissionUtils.PERMISSION_MANIFEST)) {
+            if (!PermissionUtils.checkPermissionsGroup(getApplicationContext(), PermissionUtils.getPermissions())) {
                 Toast.makeText(this, "权限申请失败，请重试", Toast.LENGTH_SHORT).show();
                 return;
             }

@@ -5,6 +5,8 @@ import android.os.Handler;
 import android.os.Looper;
 import android.text.TextUtils;
 import android.view.ViewGroup;
+
+import com.alivc.auimessage.model.token.IMNewToken;
 import com.alivc.rtc.AliRtcEngine;
 import com.aliyun.auikits.auicall.model.AUICallNVNModel;
 import com.aliyun.auikits.auicall.bean.AUICallNVNState;
@@ -69,7 +71,7 @@ public final class AUICallNVNModelImpl implements AUICallNVNModel, AUIRoomEngine
     private String mHostId;
     private boolean mHostRequestMute;
 
-    private String mImToken;
+    private IMNewToken mImToken;
     private boolean mInited;
 
     private String mInviter;
@@ -158,7 +160,7 @@ public final class AUICallNVNModelImpl implements AUICallNVNModel, AUIRoomEngine
             onDebugInfo(TAG + DEBUG + ": init uid[" + initialInfo.getUserId() + "] deviceId[" + initialInfo.getDeviceId() + "] already inited!!!");
             return;
         }
-        AppConfig.setAppInfo(initialInfo.getAppId(), initialInfo.getAppGroup());
+        AppConfig.setAppInfo(initialInfo.getAppId());
         onDebugInfo(TAG + DEBUG + ": init uid[" + initialInfo.getUserId() + "] deviceId[" + initialInfo.getDeviceId() + ']');
         this.mCurrentUser = new UserInfo(initialInfo.getUserId(), false, false, false);
         this.mImToken = mTokenAccessor.getIMToken(initialInfo.getUserId());
@@ -221,11 +223,11 @@ public final class AUICallNVNModelImpl implements AUICallNVNModel, AUIRoomEngine
     }
 
     @Override 
-    public void create( final CreateRoomCallback callback) {
+    public void create(String roomId, final CreateRoomCallback callback) {
         if (mRoomEngine == null) {
             return;
         }
-        mRoomEngine.createRoom(new AUICreateRoomCallback() { 
+        mRoomEngine.createRoom(roomId, new AUICreateRoomCallback() {
             @Override 
             public void onSuccess( String roomId) {
                 List list;

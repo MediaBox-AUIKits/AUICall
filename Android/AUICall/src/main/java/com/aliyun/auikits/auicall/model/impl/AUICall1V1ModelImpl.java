@@ -5,6 +5,8 @@ import android.os.Handler;
 import android.os.Looper;
 import android.text.TextUtils;
 import android.view.ViewGroup;
+
+import com.alivc.auimessage.model.token.IMNewToken;
 import com.aliyun.auikits.auicall.bean.InitialInfo;
 import com.aliyun.auikits.auicall.bean.AUICall1V1Mode;
 import com.aliyun.auikits.auicall.model.AUICall1V1Model;
@@ -43,7 +45,7 @@ public final class AUICall1V1ModelImpl implements AUICall1V1Model, AUIRoomEngine
 
     private CountDownTask mCallingTask;
 
-    private String mImToken;
+    private IMNewToken mImToken;
 
     private ViewGroup mMainContainer;
     private boolean mMirror;
@@ -103,9 +105,20 @@ public final class AUICall1V1ModelImpl implements AUICall1V1Model, AUIRoomEngine
         if (mCallObserver != null) {
             mCallObserver.onDebugInfo("init " + initialInfo.getUserId());
         }
-        AppConfig.setAppInfo(initialInfo.getAppId(), initialInfo.getAppGroup());
+        AppConfig.setAppInfo(initialInfo.getAppId());
         TokenAccessor tokenAccessor = this.mTokenAccessor;
         this.mImToken = tokenAccessor == null ? null : tokenAccessor.getIMToken(initialInfo.getUserId());
+        if(mImToken == null){
+            mUIHandler.post(new Runnable() {
+                @Override
+                public void run() {
+                    if(callback != null){
+                        callback.onResult(-1, "get im token failed!");
+                    }
+                }
+            });
+            return;
+        }
         this.mCallState = AUICall1V1State.Idle;
         this.mRoomEngine = AUIRoomEngineFactory.createRoomEngine();
         AlivcBase.setIntegrationWay(AUICallConfig.AUI_CALL);
@@ -245,10 +258,11 @@ public final class AUICall1V1ModelImpl implements AUICall1V1Model, AUIRoomEngine
         }
         this.mCallState = AUICall1V1State.Calling;
         this.mOppositeUserId = targetUser;
-        mRoomEngine.createRoom(new AUICreateRoomCallback() { 
+        mRoomEngine.createRoom("", new AUICreateRoomCallback() {
             @Override 
             public void onSuccess( String roomId) {
-                if(roomId == null || roomId.equals(mRoomId)){
+                if(roomId == null){
+                    mCallObserver.onError(-1, "create room result id null");
                     return;
                 }
                 mRoomId = roomId;

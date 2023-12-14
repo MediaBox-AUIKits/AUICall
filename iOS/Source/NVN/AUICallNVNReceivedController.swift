@@ -135,7 +135,6 @@ extension AUICallNVNReceivedController {
         caller.update(user: AUICallNVNController.user(extra: extra, key: "user"))
         let anchor = AUICallNVNController.user(extra: extra, key: "anchor") ?? AUIRoomUser("")
         let room = AUICallRoom(roomId, anchor)
-        room.roomName = "房间"
         let controller = AUICallNVNReceivedController(roomEngine: roomEngine, room: room, caller: caller)
         controller.start()
         return controller

@@ -8,7 +8,7 @@ AUI Kits 通话场景集成工具是阿里云提供的跨平台音视频实时�
 ## 源码说明
 
 ### 源码下载
-下载地址[请参见](https://github.com/MediaBox-AUIKits/AUICall/tree/main/iOS)
+下载地址[请参见](https://github.com/MediaBox-AUIKits/AUICall/tree/main/Android)
 
 ### 源码结构
 ```
@@ -39,7 +39,6 @@ AUI Kits 通话场景集成工具是阿里云提供的跨平台音视频实时�
 ```java
 public final class AUICallConfig {
     public static final String APP_ID = "xxx"; //你的AppId, 必填
-    public static final String APP_GROUP = "xxx"; //你的AppGroup, 必填
     public static final String HOST = "xxx"; //你的服务器域名地址, 必填
     ...
 }
@@ -61,7 +60,7 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:x.x.x'                     //修改x.x.x为你工程适配的版本
     implementation 'com.google.android.material:material:x.x.x'             //修改x.x.x为你工程适配的版本
     androidTestImplementation 'androidx.test.espresso:espresso-core:x.x.x'  //修改x.x.x为你工程适配的版本
-    implementation 'com.aliyun.aio:AliVCSDK_Premium:x.x.x'                  //修改x.x.x为你工程适配的版本
+    implementation 'com.aliyun.aio:AliVCSDK_Standard:x.x.x'                  //修改x.x.x为你工程适配的版本
 }
 ```
 3. 等待gradle同步完成，完成源码集成
@@ -73,7 +72,6 @@ dependencies {
 ```java
 public final class AUICallConfig {
     public static final String APP_ID = "xxx"; //你的AppId, 必填
-    public static final String APP_GROUP = "xxx"; //你的AppGroup, 必填
     public static final String HOST = "xxx"; //你的服务器域名地址, 必填
     ...
 }

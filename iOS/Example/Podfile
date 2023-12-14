@@ -3,13 +3,13 @@ use_frameworks!
 
 platform :ios, '10.0'
 
-AlivcSDK='AliVCSDK_Premium'
+AlivcSDK='AliVCSDK_InteractiveLive'
 def common
   
-  pod "#{AlivcSDK}", '~> 6.4.0'
+  pod "#{AlivcSDK}", '~> 6.7.0'
 
   pod 'AUIFoundation/All', :path => '../AUIBaseKits/AUIFoundation/'
-  pod 'AUIMessage/Alivc', :path => '../AUIBaseKits/AUIMessage/'
+  pod 'AUIMessage/AliVCIM', :path => '../AUIBaseKits/AUIMessage/'
   
 end
 
@@ -27,4 +27,14 @@ target 'AUICallNVNExample' do
   pod "AUICall/RoomEngine_Lib/#{AlivcSDK}", :path => '../'
   pod 'AUICall/NVN', :path => '../'
   
+end
+
+post_install do |installer|
+    installer.generated_projects.each do |project|
+          project.targets.each do |target|
+              target.build_configurations.each do |config|
+                  config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '10.0'
+               end
+          end
+   end
 end

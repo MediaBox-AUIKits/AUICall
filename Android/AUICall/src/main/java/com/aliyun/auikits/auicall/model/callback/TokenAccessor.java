@@ -1,7 +1,9 @@
 package com.aliyun.auikits.auicall.model.callback;
 
+import com.alivc.auimessage.model.token.IMNewToken;
+
 public interface TokenAccessor {
-    String getIMToken(String str);
+    IMNewToken getIMToken(String str);
 
     Long getRtcTimestamp();
 

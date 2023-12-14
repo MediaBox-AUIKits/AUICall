@@ -376,12 +376,12 @@ extension AUICallNVNController {
     public internal(set) static var roomEngine: AUIRoomEngine?
     public internal(set) static var isCalling = false
     
-    public static func createCall(roomName: String?, completed: @escaping (_ room: AUICallRoom?, _ error: Error?)->Void) {
+    public static func createCall(roomId: String?, roomName: String?, completed: @escaping (_ room: AUICallRoom?, _ error: Error?)->Void) {
         guard let roomEngine = self.roomEngine else {
             completed(nil, self.createError(code: .common, msg: "param error"))
             return
         }
-        roomEngine.create { roomId, error in
+        roomEngine.create(roomId: roomId) { roomId, error in
             if let roomId = roomId {
                 debugPrint("CreateCall & roomId:\(roomId)")
                 let room = AUICallRoom(roomId, AUIRoomEngine.currrentUser!)
@@ -394,7 +394,7 @@ extension AUICallNVNController {
         }
     }
     
-    public static func startCall(userConfig: AUICallRoomUserConfig, roomName: String?, completed: @escaping (_ controller: AUICallNVNController?, _ error: Error?)->Void) {
+    public static func startCall(roomName: String?, userConfig: AUICallRoomUserConfig, completed: @escaping (_ controller: AUICallNVNController?, _ error: Error?)->Void) {
         if self.isCalling {
             completed(nil, self.createError(code: .common, msg: "on calling"))
             return
@@ -406,7 +406,7 @@ extension AUICallNVNController {
         }
         
         self.isCalling = true
-        self.createCall(roomName: roomName) { room, error in
+        self.createCall(roomId: nil, roomName: roomName) { room, error in
             if let room = room {
                 self.joinRoom(roomEngine: roomEngine, room: room) { error in
                     if let error = error {
@@ -590,6 +590,12 @@ extension AUICallNVNController: AUIRoomEngineDelegate {
     }
     
     public func onLeaved(user: AUIRoomUser) {
+    }
+    
+    public func onExited() {
+        AVAlertController.show(withTitle: nil, message: "你已退出房间", needCancel: false) { cancel in
+            self.finish()
+        }
     }
     
     private static var showingOpenCameraAlert = false

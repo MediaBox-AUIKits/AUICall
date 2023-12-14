@@ -18,11 +18,7 @@ public class AUICallNVNCreateViewController: AVBaseViewController {
         
         self.contentView.addSubview(self.startBtn)
 
-        self.contentView.addSubview(self.titleLabel)
-        self.contentView.addSubview(self.roomIdLabel)
-        self.contentView.addSubview(self.copyIdBtn)
-        self.contentView.addSubview(self.lineView)
-
+        self.contentView.addSubview(self.inputIdView)
         self.contentView.addSubview(self.showIdLabel)
         self.contentView.addSubview(self.splitView1)
         self.contentView.addSubview(self.audioSwitchBar)
@@ -30,66 +26,21 @@ public class AUICallNVNCreateViewController: AVBaseViewController {
         self.contentView.addSubview(self.speakerSwitchBar)
 //        self.contentView.addSubview(self.beautySwitchBar)
         self.contentView.addSubview(self.splitView2)
-        
-        self.isLoaded = true
-        self.updateRoomInfo()
     }
     
-    var isLoaded = false
-    
-    var room: AUICallRoom? = nil {
-        didSet {
-            self.updateRoomInfo()
+    lazy var inputIdView: AUICallInputView = {
+        let view = AUICallInputView(frame: CGRect(x: 16.0, y: 32.0, width: self.contentView.av_width - 32.0, height: 70.0))
+        view.titleLabel.text = "输入房间号"
+        view.placeLabel.text = "请输入字母、数字、中划线"
+        view.maxInputCount = 40
+        view.inputTextChanged = {[weak self] inputView in
+            self?.startBtn.isEnabled = !inputView.inputText.isEmpty
         }
-    }
-    
-    func updateRoomInfo() {
-        if !self.isLoaded {
-            return
-        }
-        if let room = self.room {
-            self.roomIdLabel.text = room.roomId
-            self.copyIdBtn.isEnabled = true
-        }
-        else {
-            self.roomIdLabel.text = ""
-            self.copyIdBtn.isEnabled = false
-        }
-    }
-    
-    lazy var titleLabel: UILabel = {
-        let label = UILabel(frame: CGRect(x: 20.0, y: 32, width: self.contentView.av_width - 40.0, height: 24.0))
-        label.text = "房间号"
-        label.textColor = AVTheme.text_strong
-        label.font = AVTheme.mediumFont(16)
-        return label
-    }()
-    
-    lazy var roomIdLabel: UILabel = {
-        let label = UILabel(frame: CGRect(x: 20.0, y: self.titleLabel.av_bottom + 12, width: self.contentView.av_width - 40.0 - 68.0, height: 22.0))
-        label.textColor = AVTheme.text_strong
-        label.font = AVTheme.mediumFont(14)
-        return label
-    }()
-    
-    lazy var copyIdBtn: UIButton = {
-        let btn = UIButton(frame: CGRect(x: self.contentView.av_width - 14 - 40, y: self.roomIdLabel.av_centerY - 16.0, width: 40.0, height: 32.0))
-        btn.setTitle("复制", for: .normal)
-        btn.setTitleColor(AVTheme.colourful_fill_strong, for: .normal)
-        btn.setTitleColor(AVTheme.colourful_fill_disabled, for: .disabled)
-        btn.titleLabel?.font = AVTheme.regularFont(14)
-        btn.addTarget(self, action: #selector(onCopyIdBtnClicked), for: .touchUpInside)
-        return btn
-    }()
-    
-    lazy var lineView: UIView = {
-        let view = UIView(frame: CGRect(x: 20.0, y: self.roomIdLabel.av_bottom + 11, width: self.contentView.av_width - 40.0, height: 1.0))
-        view.backgroundColor = AVTheme.border_weak
         return view
     }()
-
+    
     lazy var showIdLabel: UILabel = {
-        let label = UILabel(frame: CGRect(x: 20.0, y: self.lineView.av_bottom, width: self.contentView.av_width, height: 44.0))
+        let label = UILabel(frame: CGRect(x: 20.0, y: self.inputIdView.av_bottom, width: self.contentView.av_width, height: 44.0))
         label.textColor = AVTheme.text_weak
         label.font = AVTheme.regularFont(12)
         label.text = "我的ID:" + (AUICallNVNManager.defaultManager.me?.userId ?? "unknown")
@@ -152,34 +103,25 @@ public class AUICallNVNCreateViewController: AVBaseViewController {
         return btn
     }()
     
-    @objc func onCopyIdBtnClicked() {
-        guard let room = self.room else { return }
-
-        let pasteboard = UIPasteboard.general
-        pasteboard.string = room.roomId
-        
-        AVToastView.show("已复制房间号", view: self.contentView, position: .mid)
-    }
-    
     @objc func onStartBtnClicked() {
+        let roomId = self.inputIdView.inputText
+        if roomId.isEmpty { return }
+        
+        if !AUICallRoom.validateRoomId(roomId) {
+            AVAlertController.show("用户ID仅支持字母、数字和中划线", vc: self)
+            return
+        }
+        
         let userConfig = AUICallRoomUserConfig()
         userConfig.muteAudio = !self.audioSwitchBar.switchBtn.isOn
         userConfig.muteVideo = !self.videoSwitchBar.switchBtn.isOn
         userConfig.disabledSpeaker = !self.speakerSwitchBar.switchBtn.isOn
 //        userConfig.enableBeauty = self.beautySwitchBar.switchBtn.isOn
         
-        if let room = self.room {
-            AUICallNVNManager.defaultManager.joinCall(room: room, userConfig: userConfig, currVC: self) {
-                DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + DispatchTimeInterval.milliseconds(500)) {
-                    self.removeFromParent()
-                }
-            }
-        }
-        else {
-            AUICallNVNManager.defaultManager.startCall(userConfig: userConfig, roomName: nil, currVC: self) {
-                DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + DispatchTimeInterval.milliseconds(500)) {
-                    self.removeFromParent()
-                }
+
+        AUICallNVNManager.defaultManager.createCall(roomId: roomId, roomName: nil, userConfig: userConfig, currVC: self) {
+            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + DispatchTimeInterval.milliseconds(500)) {
+                self.removeFromParent()
             }
         }
     }

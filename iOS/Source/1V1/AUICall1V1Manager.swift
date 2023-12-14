@@ -16,7 +16,6 @@ public class AUICall1V1Manager {
     
     init() {
         AUIRoomEngine.registerSDK(scene: "aui-call")
-        AUIMessageServiceImpl_Alivc.globalGroupId = AUICallGlobalConfig.globaleGroupID;
     }
     
     public var me: AUIRoomUser? {
@@ -47,17 +46,17 @@ public class AUICall1V1Manager {
     
     private func login(loginUser: AUIRoomUser, completed: @escaping (_ success: Bool)->Void) {
         AUIRoomEngine.currrentUser = loginUser
-        AUICallAppServer.fetchRoomEngineLoginToken(uid: loginUser.userId) { token, error in
+        AUICallAppServer.fetchRoomEngineLoginToken(uid: loginUser.userId) { tokenData, error in
             guard error == nil else {
                 completed(false)
                 return
             }
-            guard let token = token else {
+            guard let tokenData = tokenData else {
                 completed(false)
                 return
             }
             
-            AUIRoomEngine.login(token: token) { error in
+            AUIRoomEngine.login(tokenData: tokenData) { error in
                 if error == nil {
                     self.setupRoomEngine()
                 }

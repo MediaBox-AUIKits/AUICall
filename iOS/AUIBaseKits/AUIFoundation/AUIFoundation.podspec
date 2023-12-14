@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'AUIFoundation'
-  s.version          = '6.3.0'
+  s.version          = '6.5.0'
   s.summary          = 'A short description of AUIFoundation.'
 
 # This description is used to generate tags and improve search results.
@@ -30,7 +30,8 @@ TODO: Add long description of the pod here.
 
   s.ios.deployment_target = '9.0'
   s.static_framework = true
-  
+  s.default_subspec = 'All'
+
   s.dependency 'Masonry'
 
   s.subspec 'All' do |ss|

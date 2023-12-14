@@ -11,7 +11,7 @@ import AUIMessage
 import AUIRoomEngineSDK
 
 public class AUICallAppServer: NSObject {
-    public static let serverDomain = "你的appserver域名"
+    public static let serverDomain = "你的AppServer域名"
     public static var serverAuth: String? = ""
     public static func request(path: String, body: [AnyHashable: Any]?, completed: @escaping (_ response: URLResponse?, _ data: [AnyHashable: Any]?, _ error: Error?) -> Void) -> Void {
         let urlString = "\(self.serverDomain)\(path)"
@@ -61,26 +61,34 @@ public class AUICallAppServer: NSObject {
         task.resume()
     }
     
-    public static func serverAuthValid() -> Bool {
+    private static func serverAuthValid() -> Bool {
         return self.serverAuth != nil && !(self.serverAuth!.isEmpty)
     }
     
-    public static func fetchRoomEngineLoginToken(uid: String, completed: @escaping (_ token: String?, _ error: Error?) -> Void) {
-        
+    public static func fetchRoomEngineLoginToken(uid: String, completed: @escaping (_ tokenData: [String : Any]?, _ error: Error?) -> Void) {
         if !self.serverAuthValid() {
             completed(nil, NSError(domain: "auicall", code: -1, userInfo: [NSLocalizedDescriptionKey: "lack of auth token"]))
             return
         }
         
-        let body = [
+        let body :[String : Any] = [
             "device_id": AUIMessageConfig.deviceId,
             "device_type": "ios",
-            "user_id": uid
+            "user_id": uid,
+            "im_server":["aliyun_new"],
+            "role":"admin",
         ]
-        self.request(path: "/api/v1/live/token", body: body) { response, data, error in
+        self.request(path: "/api/v2/live/token", body: body) { response, data, error in
             if error == nil {
-                let access = data?["access_token"] as? String
-                completed(access, nil)
+                let tokenData = data?["aliyun_new_im"] as? Dictionary<String, Any>
+                if let tokenData = tokenData {
+                    var final = tokenData
+                    final["source"] = "aui-call"
+                    completed(final, nil)
+                }
+                else {
+                    completed(nil, NSError(domain: "auicall", code: -1, userInfo: [NSLocalizedDescriptionKey: "fetch token failed"]))
+                }
             }
             else {
                 completed(nil, error)

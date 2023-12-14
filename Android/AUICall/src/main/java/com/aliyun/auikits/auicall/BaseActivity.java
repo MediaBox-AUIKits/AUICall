@@ -6,6 +6,8 @@ import android.widget.Toast;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.alivc.auimessage.model.token.IMNewToken;
+import com.alivc.auimessage.model.token.IMNewTokenAuth;
 import com.aliyun.auikits.auicall.model.callback.TokenAccessor;
 import com.aliyun.auikits.auicall.fragment.BaseFragment;
 import com.aliyun.auikits.auicall.network.HttpRequest;
@@ -15,6 +17,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Random;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -34,7 +37,7 @@ public abstract class BaseActivity extends BaseDebugActivity implements TokenAcc
 
     private String mAppToken;
 
-    private String mImToken;
+    private IMNewToken mImToken;
 
     private Long mRTCTimestamp;
 
@@ -235,13 +238,17 @@ public abstract class BaseActivity extends BaseDebugActivity implements TokenAcc
     }
 
     @Override 
-    public String getIMToken( String userId) {
-        if (TextUtils.isEmpty(this.mImToken)) {
+    public IMNewToken getIMToken(String userId) {
+        if (mImToken == null) {
             JSONObject jsonObj = new JSONObject();
             try {
+                JSONArray server = new JSONArray();
+                server.put(0, "aliyun_new");
                 jsonObj.put("user_id", userId);
                 jsonObj.put("device_id", getDeviceId());
                 jsonObj.put("device_type", "android");
+                jsonObj.put("im_server", server);
+                jsonObj.put("role", "admin");
             } catch (JSONException e) {
                 e.printStackTrace();
                 throw new RuntimeException(e);
@@ -275,15 +282,35 @@ public abstract class BaseActivity extends BaseDebugActivity implements TokenAcc
                         try {
                             respData = body == null ? null : body.string();
                             JSONObject jsonObj = new JSONObject(respData);
-                            String accessToken = jsonObj.getString("access_token");
-                            String refreshToken = jsonObj.getString("refresh_token");
-                            BaseActivity.this.mImToken = new StringBuilder().append((Object) accessToken).append('_').append((Object) refreshToken).toString();
+                            JSONObject newImObj = jsonObj.getJSONObject("aliyun_new_im");
+                            if(newImObj == null){
+                                failure = true;
+                                mImToken = null;
+                            }else{
+                                BaseActivity.this.mImToken = new IMNewToken();
+                                mImToken.auth = new IMNewTokenAuth();
+                                mImToken.app_id = newImObj.getString("app_id");
+                                mImToken.app_sign = newImObj.getString("app_sign");
+                                mImToken.app_token = newImObj.getString("app_token");
+                                JSONObject auth = newImObj.getJSONObject("auth");
+                                if(auth == null){
+                                    failure = true;
+                                    mImToken = null;
+                                }else{
+                                    mImToken.auth.user_id = auth.getString("user_id");
+                                    mImToken.auth.nonce = auth.getString("nonce");
+                                    mImToken.auth.timestamp = auth.getLong("timestamp");
+                                    mImToken.auth.role = auth.getString("role");
+                                }
+                            }
                         } catch (IOException e) {
                             e.printStackTrace();
                             failure = true;
+                            mImToken = null;
                         } catch (JSONException e) {
                             e.printStackTrace();
                             failure = true;
+                            mImToken = null;
                         }
                         AliyunLog.e("base_activity", "getImToken onResponse code ok");
 
@@ -291,6 +318,7 @@ public abstract class BaseActivity extends BaseDebugActivity implements TokenAcc
                         AliyunLog.e("base_activity", "get im token onResponse code " + response.code());
                         BaseActivity.this.addDebugInfo("get im token onResponse code " + response.code());
                         failure = true;
+                        mImToken = null;
                     }
                     if(failure){
                         mUIHandler.post(new Runnable() {

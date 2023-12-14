@@ -15,6 +15,8 @@ import com.aliyun.auikits.auicall.fragment.AUICall1V1MainFragment;
 import com.aliyun.auikits.auicall.fragment.AUICall1V1MakeCallFragment;
 import com.aliyun.auikits.auicall.fragment.AUICall1V1LoginFragment;
 import com.aliyun.auikits.auicall.fragment.UserLoginFragment;
+import com.aliyun.auikits.room.config.ErrorCode;
+
 public final class AUICall1V1Activity extends BaseActivity implements UserLoginFragment.Callback, AUICall1V1MakeCallFragment.Callback, AUICall1V1MainFragment.Callback, AUICall1V1Observer {
 
     private AUICall1V1Model mCallModel;
@@ -65,7 +67,7 @@ public final class AUICall1V1Activity extends BaseActivity implements UserLoginF
                 callModel.setTokenAccessor(AUICall1V1Activity.this);
                 String deviceId = getDeviceId();
 
-                InitialInfo info = new InitialInfo(userId, deviceId, AUICallConfig.APP_ID, AUICallConfig.APP_GROUP);
+                InitialInfo info = new InitialInfo(userId, deviceId, AUICallConfig.APP_ID);
                 AUICall1V1Model callModel2 = mCallModel;
 
                 Context applicationContext = getApplicationContext();
@@ -119,7 +121,7 @@ public final class AUICall1V1Activity extends BaseActivity implements UserLoginF
     @Override 
     public void onCall( String caller) {
 
-        onDebugInfo("czwxxx: onCall caller[" + caller + ']');
+        onDebugInfo("onCall caller[" + caller + ']');
         AUICall1V1MainFragment showAndGetCallingFragment = showAndGetCallingFragment();
         if (showAndGetCallingFragment == null) {
             return;
@@ -130,7 +132,7 @@ public final class AUICall1V1Activity extends BaseActivity implements UserLoginF
     @Override 
     public void onAccept( String targetUser) {
 
-        onDebugInfo("czwxxx: onAccept targetUser[" + targetUser + ']');
+        onDebugInfo("onAccept targetUser[" + targetUser + ']');
         AUICall1V1MainFragment showAndGetCallingFragment = showAndGetCallingFragment();
         if (showAndGetCallingFragment == null) {
             return;
@@ -142,7 +144,7 @@ public final class AUICall1V1Activity extends BaseActivity implements UserLoginF
     public void onRefuse( String targetUser) {
 
         Toast.makeText(getApplicationContext(), "已拒绝", Toast.LENGTH_SHORT).show();
-        onDebugInfo("czwxxx: onRefuse targetUser[" + targetUser + ']');
+        onDebugInfo("onRefuse targetUser[" + targetUser + ']');
         AUICall1V1MainFragment showAndGetCallingFragment = showAndGetCallingFragment();
         if (showAndGetCallingFragment == null) {
             return;
@@ -152,7 +154,7 @@ public final class AUICall1V1Activity extends BaseActivity implements UserLoginF
 
     @Override 
     public void onSilentRefuse() {
-        onDebugInfo("czwxxx: onSilentRefuse");
+        onDebugInfo("onSilentRefuse");
         AUICall1V1MainFragment showAndGetCallingFragment = showAndGetCallingFragment();
         if (showAndGetCallingFragment == null) {
             return;
@@ -162,7 +164,7 @@ public final class AUICall1V1Activity extends BaseActivity implements UserLoginF
 
     @Override 
     public void onHangup() {
-        onDebugInfo("czwxxx: onHangup");
+        onDebugInfo("onHangup");
         AUICall1V1MainFragment showAndGetCallingFragment = showAndGetCallingFragment();
         if (showAndGetCallingFragment != null) {
             showAndGetCallingFragment.onHangup();
@@ -173,7 +175,7 @@ public final class AUICall1V1Activity extends BaseActivity implements UserLoginF
 
     @Override 
     public void onCancel() {
-        onDebugInfo("czwxxx: onCancel");
+        onDebugInfo("onCancel");
         AUICall1V1MainFragment showAndGetCallingFragment = showAndGetCallingFragment();
         if (showAndGetCallingFragment != null) {
             showAndGetCallingFragment.onCancel();
@@ -239,12 +241,10 @@ public final class AUICall1V1Activity extends BaseActivity implements UserLoginF
 
     @Override 
     public void onError(int errCode,  String errMsg) {
-        AUICall1V1Model callModel;
         addDebugInfo("onError code[" + errCode + "] msg[" + ((Object) errMsg) + ']');
-        if (errCode != AUICallConfig.ERROR_HEART_BEAT_TIMEOUT || (callModel = this.mCallModel) == null) {
-            return;
+        if ((errCode == AUICallConfig.ERROR_HEART_BEAT_TIMEOUT || errCode == ErrorCode.ERROR_CREATE_ROOM_FAILED) && mCallModel != null) {
+            mCallModel.hangup(true);
         }
-        callModel.hangup(true);
     }
 
     @Override 

@@ -100,7 +100,8 @@ public class AUICallNVNMainViewController: AVBaseViewController {
     }()
     
     @objc func onStartBtnClicked() {
-        AUICallNVNManager.defaultManager.createCall(roomName: nil)
+        let create = AUICallNVNCreateViewController()
+        self.navigationController?.pushViewController(create, animated: true)
     }
     
     @objc func onJoinBtnClicked() {

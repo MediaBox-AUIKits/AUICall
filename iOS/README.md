@@ -46,7 +46,7 @@ public class AUICallAppServer: NSObject {
     ...
 }
 ```
-- 完成前提条件后，进入文件AUICallGlobalConfig.swift，修改互动直播应用appID，和设置一个globaleGroupID（可以通过互动消息的createGroup来生成）
+- 完成前提条件后，进入文件AUICallGlobalConfig.swift，修改互动直播应用appID
 ```swift
 // AUICallGlobalConfig.swift
 public class AUICallGlobalConfig: NSObject {
@@ -55,8 +55,6 @@ public class AUICallGlobalConfig: NSObject {
     public static let appID = "你的appID"
     public static let gslb = "https://gw.rtn.aliyuncs.com"
     
-    public static let globaleGroupID = "你的globaleGroupID"
-
     public static let dimensions = CGSize(width: 360, height: 640)
     public static let frameRate = 15
 }
@@ -82,18 +80,18 @@ public class AUICallGlobalConfig: NSObject {
 platform :ios, '10.0'
 
 target '你的App target' do
-    # 根据自己的业务场景，集成合适的音视频终端SDK，支持：AliVCSDK_PremiumLive、AliVCSDK_Premium、AliVCSDK_Standard、AliVCSDK_InteractiveLive
-    # 如果你的APP中还需要频短视频编辑功能，可以使用音视频终端全功能SDK（AliVCSDK_Premium），可以把本文件中的所有AliVCSDK_PremiumLive替换为AliVCSDK_Premium
-    pod 'AliVCSDK_PremiumLive', '~> 6.4.0'
+    # 根据自己的业务场景，集成合适的音视频终端SDK，支持：AliVCSDK_Standard、AliVCSDK_InteractiveLive
+    # 如果你的APP中还需要频短视频编辑功能，可以使用音视频终端全功能SDK（AliVCSDK_Standard），可以把本文件中的所有AliVCSDK_InteractiveLive替换为AliVCSDK_Standard
+    pod 'AliVCSDK_InteractiveLive', '~> 6.7.0'
 
     # 基础UI组件
     pod 'AUIFoundation/All', :path => "./AUICall/AUIBaseKits/AUIFoundation/"
 
     # 互动消息组件
-    pod 'AUIMessage/Alivc', :path => "./AUICall/AUIBaseKits/AUIMessage/"
+    pod 'AUIMessage/AliVCIM', :path => "./AUICall/AUIBaseKits/AUIMessage/"
     
     # 集成RoomEngineSDK
-    pod 'AUICall/RoomEngine_Lib/AliVCSDK_PremiumLive', :path => './AUICall/'
+    pod 'AUICall/RoomEngine_Lib/AliVCSDK_InteractiveLive', :path => './AUICall/'
     # 通话组件，集成1v1通话模块
     pod 'AUICall/1V1',  :path => "./AUICall/"
     # 通话组件，集成多人通话模块
@@ -117,7 +115,7 @@ public class AUICallAppServer: NSObject {
     ...
 }
 ```
-- 完成前提条件后，进入文件AUICallGlobalConfig.swift，修改互动直播应用appID，和设置一个globaleGroupID（可以通过互动消息的createGroup来生成）
+- 完成前提条件后，进入文件AUICallGlobalConfig.swift，修改互动直播应用appID
 ```swift
 // AUICallGlobalConfig.swift
 public class AUICallGlobalConfig: NSObject {
@@ -126,8 +124,6 @@ public class AUICallGlobalConfig: NSObject {
     public static let appID = "你的appID"
     public static let gslb = "https://gw.rtn.aliyuncs.com"
     
-    public static let globaleGroupID = "你的globaleGroupID"
-
     public static let dimensions = CGSize(width: 360, height: 640)
     public static let frameRate = 15
 }

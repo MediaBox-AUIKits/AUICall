@@ -176,7 +176,7 @@ public class AUICall1V1Controller: NSObject {
         if self.mode == .video {
             self.roomEngine.startPreview()
         }
-        self.roomEngine.create {[weak self] roomId, error in
+        self.roomEngine.create(roomId: nil) {[weak self] roomId, error in
             guard let self = self else {
                 return
             }
@@ -465,6 +465,10 @@ extension AUICall1V1Controller: AUIRoomEngineDelegate {
             // 对方结束通话
             self.over(reason: .destHandup)
         }
+    }
+    
+    public func onExited() {
+        self.over(reason: .none)
     }
     
     public func onCameraStateChanged(user: AUIRoomUser, off: Bool) {

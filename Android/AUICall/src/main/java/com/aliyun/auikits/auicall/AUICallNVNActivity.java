@@ -102,7 +102,7 @@ public final class AUICallNVNActivity extends BaseActivity implements AUICallNVN
                 AUICallNVNModel meetingCallModel = mMeetingCallModel;
                 meetingCallModel.setTokenAccessor(AUICallNVNActivity.this);
                 String deviceId = getDeviceId();
-                InitialInfo info = new InitialInfo(userId, deviceId, AUICallConfig.APP_ID, AUICallConfig.APP_GROUP);
+                InitialInfo info = new InitialInfo(userId, deviceId, AUICallConfig.APP_ID);
                 AUICallNVNModel meetingCallModel2 = mMeetingCallModel;
                 Context applicationContext = getApplicationContext();
                 meetingCallModel2.init(applicationContext, info, callback);
@@ -174,7 +174,7 @@ public final class AUICallNVNActivity extends BaseActivity implements AUICallNVN
     @Override 
     public void onRefuse( String targetUser) {
         Toast.makeText(getApplicationContext(), "已拒绝", Toast.LENGTH_SHORT).show();
-        onDebugInfo("czwxxx: onRefuse targetUser[" + targetUser + ']');
+        onDebugInfo("onRefuse targetUser[" + targetUser + ']');
         AUICallNVNMemberListFragment memberListFragment = this.mMeetingMemberListFragment;
         if (memberListFragment == null) {
             return;
@@ -276,7 +276,7 @@ public final class AUICallNVNActivity extends BaseActivity implements AUICallNVN
 
     @Override 
     public void onCancel() {
-        onDebugInfo("czwxxx: onCancel");
+        onDebugInfo("onCancel");
         showMeetingOptionFragment();
         Toast.makeText(getApplicationContext(), "已取消", Toast.LENGTH_SHORT).show();
     }
@@ -298,7 +298,7 @@ public final class AUICallNVNActivity extends BaseActivity implements AUICallNVN
     @Override 
     public void onJoin( String roomId) {
 
-        onDebugInfo("czwxxx: onJoin");
+        onDebugInfo("onJoin");
         AUICallNVNMainFragment showAndGetMeetingCallFragment = showAndGetMeetingCallFragment();
         if (showAndGetMeetingCallFragment == null) {
             return;
@@ -308,7 +308,7 @@ public final class AUICallNVNActivity extends BaseActivity implements AUICallNVN
 
     @Override 
     public void onLeave() {
-        onDebugInfo("czwxxx: onLeave");
+        onDebugInfo("onLeave");
         AUICallNVNMainFragment meetingCallFragment = this.mMeetingCallFragment;
         if (meetingCallFragment != null) {
             meetingCallFragment.onLeave();
@@ -320,7 +320,7 @@ public final class AUICallNVNActivity extends BaseActivity implements AUICallNVN
     @Override 
     public void onUserJoin( String userId) {
 
-        onDebugInfo("czwxxx: onUserJoin userId[" + userId + ']');
+        onDebugInfo("onUserJoin userId[" + userId + ']');
         AUICallNVNMainFragment meetingCallFragment = this.mMeetingCallFragment;
         if (meetingCallFragment != null) {
             meetingCallFragment.onUserJoin(userId);
@@ -335,7 +335,7 @@ public final class AUICallNVNActivity extends BaseActivity implements AUICallNVN
     @Override 
     public void onUserLeave( String userId) {
 
-        onDebugInfo("czwxxx: onUserLeave userId[" + userId + ']');
+        onDebugInfo("onUserLeave userId[" + userId + ']');
         AUICallNVNMainFragment meetingCallFragment = this.mMeetingCallFragment;
         if (meetingCallFragment != null) {
             meetingCallFragment.onUserLeave(userId);
@@ -407,7 +407,7 @@ public final class AUICallNVNActivity extends BaseActivity implements AUICallNVN
     public void onInvite( String inviter,  String roomId) {
 
 
-        onDebugInfo("czwxxx: onInvite inviter[" + inviter + "] roomId[" + roomId + ']');
+        onDebugInfo("onInvite inviter[" + inviter + "] roomId[" + roomId + ']');
         AUICallNVNBeCallFragment showAndGetMeetingBeCallFragment = showAndGetMeetingBeCallFragment();
         if (showAndGetMeetingBeCallFragment == null) {
             return;
@@ -544,33 +544,9 @@ public final class AUICallNVNActivity extends BaseActivity implements AUICallNVN
         if (meetingCallModel == null) {
             return;
         }
-        meetingCallModel.create(new CreateRoomCallback() {
-            @Override 
-            public void onSuccess( String roomId) {
-                AUICallNVNCreateRoomFragment meetingCreateRoomFragment;
-                AUICallNVNCreateRoomFragment meetingCreateRoomFragment2;
-                AUICallNVNCreateRoomFragment meetingCreateRoomFragment3;
-
-                AUICallNVNActivity.this.makeSureCreateRoomFragment();
-                meetingCreateRoomFragment = AUICallNVNActivity.this.mMeetingCreateRoomFragment;
-                if (meetingCreateRoomFragment != null) {
-                    meetingCreateRoomFragment.resetState();
-                }
-                meetingCreateRoomFragment2 = AUICallNVNActivity.this.mMeetingCreateRoomFragment;
-                if (meetingCreateRoomFragment2 != null) {
-                    meetingCreateRoomFragment2.updateRoomId(roomId);
-                }
-                AUICallNVNActivity meetingCallActivity = AUICallNVNActivity.this;
-                meetingCreateRoomFragment3 = meetingCallActivity.mMeetingCreateRoomFragment;
-                meetingCallActivity.pushBackFragment(meetingCreateRoomFragment3);
-            }
-
-            @Override 
-            public void onError(int code,  String msg) {
-                Toast.makeText(AUICallNVNActivity.this.getApplicationContext(), "创建房间失败", Toast.LENGTH_SHORT).show();
-                AUICallNVNActivity.this.onDebugInfo("create room failed!!! code[" + code + "] msg[" + ((Object) msg) + ']');
-            }
-        });
+        makeSureCreateRoomFragment();
+        mMeetingCreateRoomFragment.resetState();
+        pushBackFragment(mMeetingCreateRoomFragment);
     }
 
     @Override 
@@ -609,6 +585,12 @@ public final class AUICallNVNActivity extends BaseActivity implements AUICallNVN
 
     @Override 
     public void onActionJoinRoomLoudspeaker(boolean on) {
+    }
+
+    @Override
+    public void onCreateRoomFailed(int code, String msg) {
+        Toast.makeText(this.getApplicationContext(), "创建房间失败", Toast.LENGTH_SHORT).show();
+        this.onDebugInfo("create room failed!!! code[" + code + "] msg[" + ((Object) msg) + ']');
     }
 
     @Override 

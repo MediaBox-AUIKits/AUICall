@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'AUICall'
-  s.version          = '1.0.0'
+  s.version          = '1.1.0'
   s.summary          = 'A short description of AUICall.'
 
 # This description is used to generate tags and improve search results.
@@ -61,17 +61,6 @@ TODO: Add long description of the pod here.
   
   ########################### RoomEngine不开源集成模式  ###########################
   s.subspec 'RoomEngine_Lib' do |ss|
-    ss.subspec 'AliVCSDK_Premium' do |sss|
-      sss.vendored_frameworks = 'Frameworks/AliVCSDK_Premium/AUIRoomEngineSDK.framework'
-      sss.dependency 'AUIMessage'
-      sss.dependency 'AliVCSDK_Premium'
-    end
-    
-    ss.subspec 'AliVCSDK_PremiumLive' do |sss|
-      sss.vendored_frameworks = 'Frameworks/AliVCSDK_PremiumLive/AUIRoomEngineSDK.framework'
-      sss.dependency 'AUIMessage'
-      sss.dependency 'AliVCSDK_PremiumLive'
-    end
     
     ss.subspec 'AliVCSDK_InteractiveLive' do |sss|
       sss.vendored_frameworks = 'Frameworks/AliVCSDK_InteractiveLive/AUIRoomEngineSDK.framework'

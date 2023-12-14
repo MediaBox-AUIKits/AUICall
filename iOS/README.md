@@ -70,7 +70,7 @@ public class AUICallGlobalConfig: NSObject {
 ### 集成源码
 - 导入AUICall：仓库代码下载后，拷贝iOS文件夹到你的APP代码目录下，改名为AUICall，与你的Podfile文件在同一层级，可以删除Example目录
 - 修改你的Podfile，引入：
-  - AliVCSDK_PremiumLive：适用于互动直播的音视频终端SDK，也可以使用：AliVCSDK_Premium/AliVCSDK_Standard/AliVCSDK_InteractiveLive，参考[快速集成](https://help.aliyun.com/document_detail/2412571.htm)
+  - AliVCSDK_InteractiveLive：适用于互动直播的音视频终端SDK，也可以使用：AliVCSDK_Standard，参考[快速集成](https://help.aliyun.com/document_detail/2412571.htm)
   - AUIFoundation：基础UI组件
   - AUIMessage：互动消息组件
   - AUICall：通话场景UI组件源码，根据自身的业务，可以选择1v1或NVN，也可以同时集成这2个模块

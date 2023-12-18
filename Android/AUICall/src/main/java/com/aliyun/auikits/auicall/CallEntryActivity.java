@@ -45,7 +45,7 @@ public class CallEntryActivity extends AppCompatActivity {
             if (!req) {
                 Toast.makeText(this, "请开通权限后重试", Toast.LENGTH_SHORT).show();
             } else {
-                PermissionUtils.requestPermissions(this, PermissionUtils.PERMISSION_MANIFEST, 1000);
+                PermissionUtils.requestPermissions(this, PermissionUtils.getPermissions(), 1000);
             }
             return false;
         }

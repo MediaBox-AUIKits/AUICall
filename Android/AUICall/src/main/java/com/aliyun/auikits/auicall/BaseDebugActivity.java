@@ -41,8 +41,8 @@ public abstract class BaseDebugActivity extends AppCompatActivity {
         if (listView != null) {
             listView.setAdapter((ListAdapter) debugInfoListAdapter);
         }
-        if (!PermissionUtils.checkPermissionsGroup(getApplicationContext(), PermissionUtils.PERMISSION_MANIFEST)) {
-            PermissionUtils.requestPermissions(this, PermissionUtils.PERMISSION_MANIFEST, 1000);
+        if (!PermissionUtils.checkPermissionsGroup(getApplicationContext(), PermissionUtils.getPermissions())) {
+            PermissionUtils.requestPermissions(this, PermissionUtils.getPermissions(), 1000);
         } else if (BuildConfig.DEBUG) {
             showDebugLayout();
         } else {
